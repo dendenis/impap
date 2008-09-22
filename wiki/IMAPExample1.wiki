@@ -1,0 +1,246 @@
+This example of communicating aol mail server demonstrates the functionality which should be implemented in alpha1 version.
+
+Note: ************************** stands for base64( alertmytest@aol.com password)
+
+s: * OK imap-df09.mx.aol.com v62.2 server ready
+
+
+c: 1 CAPABILITY
+s: * CAPABILITY IMAP4rev1 LITERAL+ XAOL-ENVELOPE XAOL-ENVELOPE-TF XAOL-NETMAIL XAOL-OPTION XAOL-FBR.OLD IDLE STARTTLS BINARY AUTH=PLAIN AUTH=XAOL-UAS-MB QUOTA XAOL-REPORTSPAM XAOL-UNSEND XAOL.STATUS UIDPLUS NAMESPACE ID XAOL-LIST
+
+
+s: 1 OK CAPABILITY completed
+
+
+c: 2 AUTHENTICATE PLAIN
+s: + 
+
+
+c: **************************
+c: 3 LSUB "" "*"
+s: 2 OK AUTHENTICATE completed
+
+
+s: * LSUB (\HasNoChildren \Noinferiors) "/" INBOX
+
+
+s: * LSUB (\HasNoChildren \Noinferiors) "/" "Sent Items"
+
+
+s: * LSUB (\HasNoChildren \Noinferiors) "/" VOICEMAIL
+
+
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Spam
+
+
+s: * LSUB (\HasChildren) "/" Saved
+
+
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Drafts
+
+
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Trash
+
+
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Saved/SavedIMs
+
+
+s: * LSUB (\HasNoChildren \Noinferiors) "/" afolder
+
+
+s: 3 OK LSUB completed
+
+
+c: 4 LSUB SAVED "*"
+s: * LSUB (\HasChildren) "/" Saved
+
+
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Saved/SavedIMs
+
+
+s: 4 OK LSUB completed
+
+
+c: 5 SELECT "INBOX"
+s: * 3 EXISTS
+
+
+s: * OK [UIDVALIDITY 1] UID validity status
+
+
+s: * OK [UIDNEXT 19878861] predicted next UID
+
+
+s: * 0 RECENT
+
+
+s: * FLAGS (\Seen \Deleted XAOL-READ XAOL-GOODCHECK-DONE XAOL-CLIENT-BULK XAOL-RECEIVED XAOL-SENT $Forwarded XAOL-GOOD \Draft \Flagged \Answered $MDNSent XAOL-VOICEMAIL XAOL-BULK XAOL-PRIORITY-MAIL XAOL-BILLPAY-MAIL XAOL-OFFICIAL-MAIL XAOL-VIRUS-REPAIRED XAOL-VIRUS-NOT-SCANNED)
+
+
+s: * OK [PERMANENTFLAGS (\Seen \Deleted XAOL-GOODCHECK-DONE XAOL-CLIENT-BULK XAOL-RECEIVED $Forwarded XAOL-GOOD \Draft \Flagged \Answered $MDNSent)] Permanent flags
+
+
+s: 5 OK [READ-WRITE] SELECT completed
+
+
+c: 6 UID FETCH 1:* (UID)
+s: * 1 FETCH (UID 19878828)
+
+
+s: * 2 FETCH (UID 19878850)
+
+
+s: * 3 FETCH (UID 19878860)
+
+
+s: 6 OK UID FETCH completed
+
+
+c: 7 UID FETCH 19878828 (BODY[HEADER])
+s: * 1 FETCH (UID 19878828 BODY[HEADER] {3221}
+
+
+s: Return-Path: <"V1s6400005C2C0000694F0000000148D6277D6F0903EA0005D5AA0000014E000027F8e1520080924T105245o0523596u14AOLWelcomeInfod15message.aol.com."@reroute-gms.mx.aol.com>
+
+
+s: Received: from rly-mp01.mx.aol.com (rly-mp01.mail.aol.com [172.21.138.33]) by air-mp02.mail.aol.com (v121_r2.12) with ESMTP id MAILINMP021-c1448d6277f31c; Sun, 21 Sep 2008 06:52:48 -0400
+
+
+s: Received: from gmc-da04.mx.aol.com (gmc-da04.mx.aol.com [205.188.156.228]) by rly-mp01.mx.aol.com (v121_r2.11) with ESMTP id MAILRELAYINMP018-c1448d6277f31c; Sun, 21 Sep 2008 06:52:47 -0400
+
+
+s: Received: from service04.goodmailsystems.com (service.goodmailsystems.com [72.5.68.89]) by gmc-da04.mx.aol.com for alertmytest@aol.com; 21 Sep 2008 10:52:47 -0000
+
+
+s: X-AOL-GMrly: service.goodmailsystems.com [72.5.68.89] gmc-da04.mx.aol.com AOLWelcomeInfo@message.aol.com
+
+
+s: X-GoodmailSystems-Canceled: 2; h=gmc-da04.mx.aol.com; d=20080921T105247; m=13486; p=4
+
+
+s: X-GoodmailSystems-Sig: NUyZ0Y9o2cweH/TmukLzZOH5azHFeJOYQRSwB/DMyFt6dELdbvrElBGA
+
+
+s:      ZOpL1JCiL9XN2NwXkph5ZZqDCWzQ0k0inWC2fUbsYBZuO4DizPba3AHj2zk1mWC9C7e6INHp
+
+
+s: X-GoodmailSystems-Entity: AOL
+
+
+s: X-GoodmailSystems-Cert: MIICjjCCAXYCBBAAACowDQYJKoZIhvcNAQEFBQAwIDEeMBwGA1UEAxM
+
+
+s:      VU0NBOlgtR29vZG1haWxTeXN0ZW1zMB4XDTA4MDUwMTAwMDAwMFoXDTA5MDIwMTE1MDAwMFowgZ4xCzA
+
+
+s:      JBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEZMBcGA1UEChMQR29
+
+
+s:      vZG1haWwgU3lzdGVtczEMMAoGA1UECxMDT3BzMRkwFwYDVQQDExBHb29kbWFpbCBTeXN0ZW1zMSYwJAY
+
+
+s:      JKoZIhvcNAQkBFhdvcHNAZ29vZG1haWxzeXN0ZW1zLmNvbTB8MA0GCSqGSIb3DQEBAQUAA2sAMGgCYQC
+
+
+s:      rgoi33+1u+7PcrF9NZlWzkIx2lubtOGVpK/qZes5Xv28AiU7UG+34hN91PNyHpi2nSFgNMQWCQ9PgXU9
+
+
+s:      Dc4vO297NgfB4Fij91vgITam9b1vDEpQl7uCi/MmTr9GZIVMCAwEAATANBgkqhkiG9w0BAQUFAAOCAQE
+
+
+s:      ARUI8fd1QNeHBcanf58MJjhTm87foOfhJSAxt7JNQly6agFWsEyGRmEuFjNIaPdIuX4eGvkti0+VmSQq
+
+
+s:      yRF4wJbPBzttZpyU8sQTQ7IBTPqqEtbTYxa8QOYxHYkh1oZVfOv8asKpk4UATY8ojoX+lfuxVaXcIjIk
+
+
+s:      2gwlcxOEneB/X7/PhXI5AnHRgGwgOo9v7Z2h72Qf4cZem0i9vOR+n3QY1XJaO250fOxFxIIgqOzFVsCR
+
+
+s:      MqbTjEE2jhRUAiCj+Ys5XRG9UW9bKT/zZa3LhTZSEs9eCQvDPLqDmzqIq1q3vWMKfdS6/lbEjdCWn2bw
+
+
+s:      97phpgPz2qIIZ8MXbI7HvMQ==
+
+
+s: X-GoodmailSystems-Rcpto: alertmytest@aol.com
+
+
+s: X-GoodmailSystems: 2; i="1"; 
+
+
+s:      s="00005C2C0000694F0000000148D6277D6F0903EA0005D5AA0000014E000027F8"; 
+
+
+s:      e="20080924T105245"; d="20080921T105245"; o="23596"; t="0"; p="4"; 
+
+
+s:      h="YcyVM7Lv34qgAu5Y+JZeurIN34s="; b="OgeiUL8byn4L/O8s7LxrqzDE+RU="; 
+
+
+s:      f="IkFPTFdlbGNvbWVJbmZvIiA8QU9MV2VsY29tZUluZm9AbWVzc2FnZS5hb2wuY29tPg=="; 
+
+
+s:      I="001002000";
+
+
+s: Received: from [198.31.62.27] ([198.31.62.27:42208] helo=mta.email.aol.com)
+
+
+s:      by service04.goodmailsystems.com (envelope-from <AOLWelcomeInfo@message.aol.com>)
+
+
+s:      (ecelerity 2.2.2.29 r(23147)) with ESMTP
+
+
+s:      id 83/BD-18559-D7726D84; Sun, 21 Sep 2008 03:52:45 -0700
+
+
+s: Date: Sun, 21 Sep 2008 06:52:45 -0400 (EDT)
+
+
+s: Message-Id: <Kilauea157120-0-1087950697-2-1127026554314408936@flonetwork.com>
+
+
+s: From: "AOLWelcomeInfo" <AOLWelcomeInfo@message.aol.com>
+
+
+s: Reply-To: "AOLWelcomeInfo " <AOLWelcomeInfo-ctg0iecacaacmxaebwgpnfenmj35adjq@message.aol.com>
+
+
+s: To: alertmytest@aol.com
+
+
+s: Subject: It's Easy To Let All of Your Friends Know Your New AOL Email Address
+
+
+s: MIME-Version: 1.0
+
+
+s: Content-Type: text/html; charset="us-ascii"
+
+
+s: Content-Transfer-Encoding: 7bit
+
+
+s: X-AOL-IP: 205.188.156.228
+
+
+s: X-Mailer: Unknown (No Version)
+
+
+s: 
+
+
+s: )
+
+
+s: 7 OK UID FETCH completed
+
+
+c: 8 LOGOUT
+s: * BYE IMAP4rev1 Server logging out
+
+
+s: 8 OK LOGOUT completed
+
