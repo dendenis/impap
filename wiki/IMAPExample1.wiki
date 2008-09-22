@@ -1,7 +1,8 @@
 This example of communicating aol mail server demonstrates the functionality which should be implemented in alpha1 version.
 
-Note: ************************** stands for base64( alertmytest@aol.com password)
+Note: {{{**************************}}} stands for base64(" alertmytest@aol.com password")
 
+{{{
 s: * OK imap-df09.mx.aol.com v62.2 server ready
 
 
@@ -243,4 +244,4 @@ s: * BYE IMAP4rev1 Server logging out
 
 
 s: 8 OK LOGOUT completed
-
+}}}
