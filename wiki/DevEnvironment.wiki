@@ -1,0 +1,11 @@
+= Development Environment =
+
+  * Scala programming language (http://scala-lang.org)
+  * Eclipse v 3.4 (http://eclipse.org)
+  * Scala plugin (update site: http://www.scala-lang.org/scala-eclipse-plugin)
+  * Subclipse plugin (update site: http://subclipse.tigris.org/update_1.4.x)
+  
+= Resources =
+  
+  * Scala actors framework (http://www.scala-lang.org/node/242)
+ 
