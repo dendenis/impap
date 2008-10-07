@@ -6,5 +6,14 @@ object IMAPConstants {
   val LOGOUT_COMMAND = "LOGOUT";
   val UNRECOGNIZED_COMMAND = "unrecognized command";
   val MISSING_COMMAND = "Missing command";
-  val CONNECTED_MESSAGE = "* OK 127.0.0.1 server ready\n";
+  val CONNECTED_MESSAGE = "127.0.0.1 server ready";
+  
+  val OK_RESULT = "OK"
+  val NO_RESULT = "NO"
+  val BAD_RESULT = "BAD"
+  
+  val ASTERISK_TAG = "*"
+  val PLUS_TAG = "+"
+  
+  val EOL: String = 10.toChar.toString + 13.toChar.toString
 }

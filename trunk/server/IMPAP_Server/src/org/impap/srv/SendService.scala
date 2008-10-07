@@ -2,7 +2,8 @@ package org.impap.srv
 
 import scala.actors.Actor
 import scala.actors.Actor._
-import java.nio.channels.SocketChannel;
+import java.nio.channels.SocketChannel
+import java.io.IOException
 
 class SendService(channel: SocketChannel) extends Actor{
  def act() {
@@ -10,30 +11,34 @@ class SendService(channel: SocketChannel) extends Actor{
     {
       react
       {
-        case SendDataMessage(text) =>
+        case SendDataMessage(tag, text) =>
+          try{
+            if(channel.isConnected){
+              // Console.print("S: " + text)
+              channel.socket.getOutputStream.write((tag + " " + text + IMAPConstants.EOL).getBytes())
+              //Console.println("Send complete")
+            }
+            else{
+              Console.println("Shit happened")
+            }
+          }
+          catch{
+             case e: IOException =>
+               Console.println("IO Error happened")
+               sender ! Stop
+          }
+
+        case SendLastDataMessage(tag, text) =>
           if(channel.isConnected)
           {
-            Console.print("S: " + text)
-            channel.socket.getOutputStream.write(text.getBytes())
-            Console.println("Send complete")
-          }
-          else
-          {
-            Console.println("Shit happened")
-            this ! Stop    
-          }
-        case SendLastDataMessage(text) =>
-          if(channel.isConnected)
-          {
-            Console.print("S: " + text)
-            channel.socket.getOutputStream.write(text.getBytes())
-            Console.println("Send complete")
+            //Console.print("S: " + text)
+            channel.socket.getOutputStream.write((tag + " " + text + IMAPConstants.EOL).getBytes())
+            //Console.println("Send complete")
             sender ! Stop
           }
           else
           {
             Console.println("Shit happened")
-            this ! Stop
           }
 
         case Stop =>

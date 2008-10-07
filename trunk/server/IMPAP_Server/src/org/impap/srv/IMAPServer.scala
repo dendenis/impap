@@ -21,11 +21,11 @@ class IMAPServer(channel: SocketChannel) extends Actor {
           Console.println("connected")
           sendService.start
           receiveService.start
-          sendService ! SendDataMessage(IMAPConstants.CONNECTED_MESSAGE)
+          sendService ! SendDataMessage(IMAPConstants.ASTERISK_TAG, IMAPConstants.OK_RESULT + " "  + IMAPConstants.CONNECTED_MESSAGE)
           receiveService ! ReceiveCommand
           
         case ReceivedDataMessage(text) =>
-          Console.println("C: " + text)
+       //   Console.println("C: " + text)
           val pattern = Pattern.compile(IMAPConstants.COMMAND_PATTERN)
           val matcher = pattern.matcher(text);
         
@@ -38,7 +38,7 @@ class IMAPServer(channel: SocketChannel) extends Actor {
           }
           else
           {
-            this ! IMAPCommand("*", IMAPConstants.MISSING_COMMAND, "")  
+            this ! IMAPCommand(IMAPConstants.ASTERISK_TAG, IMAPConstants.MISSING_COMMAND, "")  
           }
           
         case IMAPCommand(tag, IMAPConstants.CAPABILITY_COMMAND, args) =>
@@ -55,8 +55,6 @@ class IMAPServer(channel: SocketChannel) extends Actor {
           
         case Stop =>
           Console.println("Disconnecting")
-          channel.socket.shutdownInput
-          channel.socket.shutdownOutput
           sendService ! Stop
           receiveService ! Stop
 
@@ -69,24 +67,22 @@ class IMAPServer(channel: SocketChannel) extends Actor {
   }
  
    private def proc_capability(tag: String) {
-      val response = "* " + IMAPConstants.CAPABILITY_COMMAND + " IMAP4rev1 AUTH=PLAIN\n";
-      Console.println(IMAPConstants.CAPABILITY_COMMAND + " proccessed")
-      sendService ! SendDataMessage(response)
+      sendService ! SendDataMessage(IMAPConstants.ASTERISK_TAG, "IMAP4rev1 AUTH=PLAIN")
+      sendService ! SendDataMessage(tag,  IMAPConstants.OK_RESULT + " " + IMAPConstants.CAPABILITY_COMMAND + " completed")
     }
    
-   private def proc_logout(tag: String){
-      val response = tag + " OK " + IMAPConstants.LOGOUT_COMMAND + " completed\n"
-      sendService ! SendLastDataMessage(response)
-      Console.println("Last message sent")
+  private def proc_logout(tag: String){
+      sendService ! SendDataMessage(IMAPConstants.ASTERISK_TAG, "BYE IMAP4rev1 Server logging out")
+      sendService ! SendLastDataMessage(tag, IMAPConstants.OK_RESULT + " " +  IMAPConstants.LOGOUT_COMMAND + " completed")
   }
 
   private def proc_unrecognized(tag: String){
-      val response = tag + " BAD " + IMAPConstants.UNRECOGNIZED_COMMAND + "\n"
-      sendService ! SendDataMessage(response)
+      val response = IMAPConstants.BAD_RESULT + " " +  IMAPConstants.UNRECOGNIZED_COMMAND
+      sendService ! SendDataMessage(tag, response)
   }
 
   private def proc_missing(tag: String) {
-    val response = "* BAD " + IMAPConstants.MISSING_COMMAND + "\n"
-    sendService ! SendDataMessage(response)
+    val response =IMAPConstants.BAD_RESULT + " " + IMAPConstants.MISSING_COMMAND
+    sendService ! SendDataMessage(IMAPConstants.ASTERISK_TAG, response)
   }
 }

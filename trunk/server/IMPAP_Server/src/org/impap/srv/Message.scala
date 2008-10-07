@@ -5,8 +5,8 @@ import java.nio.channels.SocketChannel;
 case class ReceivedDataMessage(text: String)
 case class Connected
 
-case class SendDataMessage(text: String)
-case class SendLastDataMessage(text: String)
+case class SendDataMessage(tag: String, text: String)
+case class SendLastDataMessage(tag: String, text: String)
 case class ReceiveCommand
 case class Stop
 
