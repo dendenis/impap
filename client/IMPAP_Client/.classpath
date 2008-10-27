@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="ch.epfl.lamp.sdt.launching.SCALA_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/naga/naga-1_2-r12.jar"/>
+	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/qt/qtjambi-win32-msvc2005-4.4.3_01.jar"/>
+	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/qt/qtjambi-4.4.3_01.jar"/>
+	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/imapclient/qt_gui.jar"/>
+	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/javaMail/mailapi.jar"/>
+	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/javaMail/dsn.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
