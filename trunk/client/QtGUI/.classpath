@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="lib" path="F:/Qt/qtjambi-4.4.3_01.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:F:/Qt/doc/html"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="F:/Qt/qtjambi-win32-msvc2005-4.4.3_01.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:F:/Qt/doc/html"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/scala/scala-swing.jar"/>
+	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/scala/scala-dbc.jar"/>
+	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/scala/scala-library.jar"/>
+	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/imapclient/imap_common.jar"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="Generated JUIC files"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
