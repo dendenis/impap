@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'MainForm.jui'
 **
-** Created: ѕн 27. окт 04:08:41 2008
+** Created: ѕт 31. окт 11:31:10 2008
 **      by: Qt User Interface Compiler version 4.4.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -11,6 +11,8 @@ package org.impap.qtgui;
 
 import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.*;
+
+import com.trolltech.qt.webkit.*;
 
 public class Ui_MainForm
 {
@@ -32,8 +34,8 @@ public class Ui_MainForm
     public QLineEdit toEdit;
     public QLabel label_7;
     public QLineEdit subjectEdit;
-    public QTextBrowser bodyText;
     public QPushButton connectButton;
+    public QWebView bodyText;
     public QStatusBar statusbar;
 
     public Ui_MainForm() { super(); }
@@ -107,14 +109,13 @@ public class Ui_MainForm
         subjectEdit.setGeometry(new QRect(10, 220, 451, 20));
         subjectEdit.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
         subjectEdit.setReadOnly(true);
-        bodyText = new QTextBrowser(groupBox);
-        bodyText.setObjectName("bodyText");
-        bodyText.setGeometry(new QRect(10, 250, 451, 261));
-        bodyText.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus);
         connectButton = new QPushButton(groupBox);
         connectButton.setObjectName("connectButton");
         connectButton.setGeometry(new QRect(220, 20, 51, 23));
         connectButton.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
+        bodyText = new QWebView(groupBox);
+        bodyText.setObjectName("bodyText");
+        bodyText.setGeometry(new QRect(10, 250, 301, 251));
         MainForm.setCentralWidget(centralwidget);
         statusbar = new QStatusBar(MainForm);
         statusbar.setObjectName("statusbar");
@@ -137,7 +138,7 @@ public class Ui_MainForm
         label_3.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "username"));
         usernameEdit.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "alertmytest"));
         label_4.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "password"));
-        passEdit.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "Qqqqqqqq"));
+        passEdit.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "S"));
         label_5.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "from"));
         label_6.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "to"));
         label_7.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "subject"));

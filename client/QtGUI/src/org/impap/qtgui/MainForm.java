@@ -3,6 +3,7 @@ package org.impap.qtgui;
 import org.imap.common.ApplicationClient;
 import org.imap.common.Item;
 
+import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QTimer;
 import com.trolltech.qt.gui.QCloseEvent;
 import com.trolltech.qt.gui.QMainWindow;
@@ -35,7 +36,7 @@ public class MainForm extends QMainWindow {
 		ui.setupUi(this);
 	}
 
-	private void updateMessageTree() {
+	public void updateMessageTree() {
 		if (client.isChanged()) {
 			ui.messageTree.clear();
 			QTreeWidgetItem root = new QTreeWidgetItem();
@@ -84,7 +85,12 @@ public class MainForm extends QMainWindow {
 					ui.fromEdit.setText(imapItem.from());
 					ui.toEdit.setText(imapItem.to());
  				    ui.subjectEdit.setText(imapItem.subject());
- 				    ui.bodyText.setPlainText(imapItem.text());
+ 				    QByteArray byteArray = new QByteArray();
+ 				    byteArray.append(imapItem.content());
+ 				   
+ 				    //ui.bodyText.setContent(byteArray, imapItem.contentType());
+ 				     ui.bodyText.setContent(byteArray, "text/html");
+ 				    //ui.bodyText.setPlainText(imapItem.text());
 					
 					if(imapItem.isFolder()){
 					  client.listFolder(imapItem);
