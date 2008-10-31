@@ -15,7 +15,11 @@ class Item(name: String, id: String) {
   def subject: String = ""
   def from: String = ""
   def to: String = ""
-  def text: String = ""
+  def content: String = {
+    Console.println("Item getContent")
+    ""
+  }
+  def contentType: String = "text/html"
   
   override def toString = name + " " + children
 }
