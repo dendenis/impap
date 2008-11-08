@@ -13,9 +13,9 @@
 	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/scala/scala-swing.jar"/>
 	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/scala/scala-dbc.jar"/>
 	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/scala/scala-library.jar"/>
-	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/imapclient/imap_common.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="Generated JUIC files"/>
+	<classpathentry kind="lib" path="D:/ALeRT/devel/java/lib/imapclient/imap_common.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
