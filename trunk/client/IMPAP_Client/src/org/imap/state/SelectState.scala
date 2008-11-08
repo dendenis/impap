@@ -7,7 +7,7 @@ import scala.actors.Actor
 import scala.actors.Actor._
 
 import org.imap.client._
-import org.imap.common._
+import org.imap.message.Item
 import java.lang.Integer
 
 class SelectState(client: Actor, tag: Integer, folder: Item) extends AbstractState(client, tag){
@@ -15,7 +15,7 @@ class SelectState(client: Actor, tag: Integer, folder: Item) extends AbstractSta
   override def reaction(msg: Any) ={
     msg match {
         case Start =>
-          client ! SendDataMessage("" + tag, "SELECT \"" + folder.getName + "\"");
+          client ! SendDataMessage("" + tag, "SELECT \"" + folder.getId + "\"");
         case msg: Any => super.reaction(msg)  
     }
   }

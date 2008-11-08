@@ -17,6 +17,9 @@ class IdleState(client: Actor, tag: Integer) extends AbstractState(client, tag){
        case ListFolder(folder, client) =>
           Console.println("about to list folder " + folder)
           setState(new SelectState(client, tag.intValue + 1, folder))
+       case GetMessage(folder, uid) =>
+          setState(new ReceiveMessageState(client, tag.intValue + 1, folder, uid))
+
        case msg: Any => super.reaction(msg)  
     }
   }
