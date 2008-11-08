@@ -1,7 +1,8 @@
 package org.impap.qtgui;
 
 import org.imap.common.ApplicationClient;
-import org.imap.common.Item;
+import org.imap.message.Item;
+import org.imap.message.Message;
 
 import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QTimer;
@@ -16,6 +17,7 @@ public class MainForm extends QMainWindow {
 	private ApplicationClient client;
 	private QTimer timer;
 	private boolean connected = false;
+	private Message currentMessage = null;
 
 	public MainForm(ApplicationClient client) {
 		this.client = client;
@@ -45,19 +47,31 @@ public class MainForm extends QMainWindow {
 
 			ui.messageTree.addTopLevelItem(root);
 
-			for (Item child : client.getRoot().getChildren().values()) {
+			for (Item child : client.getItemTree().getChildren().values()) {
 				updateMessageTree(root, child);
 			}
 
 			client.setChanged(false);
 		}
+		else if((currentMessage != null)&&(ui.messageTree.currentItem() != null)){
+			Item folder = (Item) ui.messageTree.currentItem().data(1, 0);
+			if (!currentMessage.isDownloaded() && folder.getId().equals(currentMessage.getId())){
+				currentMessage = client.getMessage(folder, currentMessage.getId());
+				ui.fromEdit.setText(currentMessage.from());
+				ui.toEdit.setText(currentMessage.to());
+				ui.subjectEdit.setText(currentMessage.subject());
+				QByteArray byteArray = new QByteArray();
+				byteArray.append(currentMessage.content());
+				ui.bodyText.setContent(byteArray, "text/html");
+			}
+		}
 	}
 
 	private void updateMessageTree(QTreeWidgetItem parent, Item imapItem) {
 		QTreeWidgetItem item = new QTreeWidgetItem(parent);
-		item.setText(0, imapItem.getName());
+		item.setText(0, imapItem.getText());
 		item.setData(1, 0, imapItem);
-		
+
 		for (Item child : imapItem.getChildren().values()) {
 			updateMessageTree(item, child);
 		}
@@ -67,10 +81,10 @@ public class MainForm extends QMainWindow {
 		// System.out.println("Connect clicked");
 
 		connected = !connected;
-	
+
 		if (connected) {
-			client.connect(ui.addressEdit.text(), Integer.valueOf(ui.portSpin.value()),
-					ui.usernameEdit.text(), ui.passEdit.text());
+			client.connect(ui.addressEdit.text(), Integer.valueOf(ui.portSpin
+					.value()), ui.usernameEdit.text(), ui.passEdit.text());
 		} else {
 			client.disconnect();
 		}
@@ -80,21 +94,24 @@ public class MainForm extends QMainWindow {
 		if (connected) {
 			if (ui.messageTree.currentItem() != null) {
 				Item imapItem = (Item) ui.messageTree.currentItem().data(1, 0);
-					
+
 				if (imapItem != null) {
-					ui.fromEdit.setText(imapItem.from());
-					ui.toEdit.setText(imapItem.to());
- 				    ui.subjectEdit.setText(imapItem.subject());
- 				    QByteArray byteArray = new QByteArray();
- 				    byteArray.append(imapItem.content());
- 				   
- 				    //ui.bodyText.setContent(byteArray, imapItem.contentType());
- 				     ui.bodyText.setContent(byteArray, "text/html");
- 				    //ui.bodyText.setPlainText(imapItem.text());
-					
-					if(imapItem.isFolder()){
-					  client.listFolder(imapItem);
-					  System.out.println("list folder called");
+					if (imapItem.isFolder()) {
+						currentMessage = null;
+						ui.fromEdit.setText("");
+						ui.toEdit.setText("");
+						ui.subjectEdit.setText("");
+						ui.bodyText.setContent(new QByteArray(), "text/html");
+						client.listFolder(imapItem);
+						System.out.println("list folder called");
+					} else {
+						currentMessage = client.getMessage(imapItem, imapItem.getId());
+						ui.fromEdit.setText(currentMessage.from());
+						ui.toEdit.setText(currentMessage.to());
+						ui.subjectEdit.setText(currentMessage.subject());
+						QByteArray byteArray = new QByteArray();
+						byteArray.append(currentMessage.content());
+						ui.bodyText.setContent(byteArray, "text/html");
 					}
 				}
 			}
@@ -107,8 +124,4 @@ public class MainForm extends QMainWindow {
 		super.closeEvent(event);
 	}
 
-	// public boolean onClose(){
-	// client.close();
-	// th
-	// }
 }
