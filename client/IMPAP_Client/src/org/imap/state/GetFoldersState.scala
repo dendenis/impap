@@ -21,6 +21,6 @@ class GetFoldersState(client: Actor, tag: Integer) extends AbstractState(client,
   override def receivedDataRegex: String = "\\* LSUB \\([^\\(\\)]*\\) \"\\/\" ([A-Za-z0-9_/ ]+)"
   
   override def onPatternMatch(matcher: Matcher) ={
-    client ! AddFolder(matcher.group(1))
+    client ! AddFolderItem(matcher.group(1))
   }
 }

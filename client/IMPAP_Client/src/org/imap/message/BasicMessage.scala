@@ -1,4 +1,4 @@
-package org.imap.common
+package org.imap.message
 
 import javax.mail.internet.MimeMessage
 import java.lang.Boolean
@@ -6,12 +6,8 @@ import java.io.InputStream
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class MessageItem(message: MimeMessage, id: String) extends Item("message", id){
-  
-  override def getName: String ={
-     from + " " + message.getSubject
-  }
-
+class BasicMessage (message: MimeMessage, id: String) extends Message{
+  override def isDownloaded: Boolean = true
   override def subject: String = message.getSubject
   override def from: String = message.getFrom.foldLeft("")(_ +  _ + " ").trim
   override def to: String = message.getAllRecipients.foldLeft("")(_ +  _ + " ").trim
@@ -29,13 +25,5 @@ class MessageItem(message: MimeMessage, id: String) extends Item("message", id){
       message.getContent.toString
     }
   }
-  
-  override def contentType: String = {
-    Console.println("ContentType = " + message.getContentType)
-    message.getContentType
-  }
-  
-  override def isMessage: Boolean = true
-  override def isFolder: Boolean = false
-  override def toString = getName
+  override def getId: String = id
 }

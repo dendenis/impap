@@ -7,7 +7,7 @@ import scala.actors.Actor
 import scala.actors.Actor._
 
 import org.imap.client._
-import org.imap.common._
+import org.imap.message.Item
 import java.lang.Integer
 import java.util.LinkedList
 
@@ -30,6 +30,6 @@ class ListFolderState(client: Actor, tag: Integer, folder: Item) extends Abstrac
   
   override def onOK ={
     val array = uidList.toArray( new Array[String](0))
-    setState(new ReceiveMessageState(client, tag.intValue + 1, folder, array.toList))
+    setState(new ReceiveHeaderState(client, tag.intValue + 1, folder, array.toList))
   }
 }

@@ -60,7 +60,7 @@ abstract class AbstractState(client: Actor, tag: Integer) extends Actor{
         case Stop =>
           exit
         case msg: Any =>
-          Console.println("Unknown message: " + msg.toString)
+          Console.println(this.getClass + " got unknown message: " + msg.toString)
     }
   }
   
