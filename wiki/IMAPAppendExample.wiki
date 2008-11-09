@@ -1,0 +1,43 @@
+= IMAP Append Command Example =
+
+APPEND seems to be a realy wierd command (when interacting with aol at least)
+
+{{{Command format: TAG APPEND <folder name> <flags> <datetime> {<message size>+} }}}
+
+Unlike the AUTHENTICATE Command server doesn't give a "+" in response
+and the message size is implicitly specified (<message size> in command format)
+
+After sending command APPEND, client doesn't wait for any server response and
+sends the specified number of bytes (<message size>) containg the message text.
+
+Message text is separated from flags by a "\r\n" in the end of the message there is also an additional "\r\n".
+
+{{{*******************}}} - starred value of {{{ base64(\0username\0password) }}}
+339 - size of the message in the example
+
+== Protocol ==
+{{{
+s: * OK imap-mb03.mx.aol.com v63.1 server ready
+c: 1 CAPABILITY
+s: * CAPABILITY IMAP4rev1 LITERAL+ XAOL-ENVELOPE XAOL-ENVELOPE-TF XAOL-NETMAIL XAOL-OPTION XAOL-FBR.OLD IDLE STARTTLS BINARY AUTH=PLAIN AUTH=XAOL-UAS-MB QUOTA XAOL-REPORTSPAM XAOL-UNSEND XAOL.STATUS UIDPLUS NAMESPACE ID XAOL-LIST
+s: 1 OK CAPABILITY completed
+c: 2 AUTHENTICATE PLAIN
+s: + 
+c: *******************
+c: 3 APPEND "afolder" (\Seen) "09-Nov-2008 13:00:03 +0300" {339+}
+c: From: alert <alertmytest@aol.com>
+Subject: afternoon meeting
+To: mooch@owatagu.siam.edu
+Message-ID: <4916B4A4.7070108@aol.com>
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; CHARSET=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Hello Joe, do you think we can meet at 3:30 tomorrow?
+
+s: 2 OK AUTHENTICATE completed
+s: 3 OK [APPENDUID 1 20393991] APPEND completed
+s: * BYE IMAP4rev1 Server logging out
+
+}}}
