@@ -3,10 +3,14 @@ package org.imap.client;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import org.imap.common.CompositeLogger;
 import org.impap.qtgui.ClientGui;
 
 public class Main {
 	public static void main(String[] args) {
+		
+		CompositeLogger logger = new CompositeLogger();
+		
 		ClassLoader sysClassLoader = ClassLoader.getSystemClassLoader();
 
         //Get the URLs
@@ -17,8 +21,9 @@ public class Main {
             System.out.println(urls[i].getFile());
         }       
 		
-		IMAPClient client = new IMAPClient();
-		NagaNetworkService networkService = new NagaNetworkService(client);
+        
+		IMAPClient client = new IMAPClient(logger);
+		NagaNetworkService networkService = new NagaNetworkService(client, logger);
 		client.start(networkService);
 		networkService.start();
 		ClientGui gui = new ClientGui(client);
