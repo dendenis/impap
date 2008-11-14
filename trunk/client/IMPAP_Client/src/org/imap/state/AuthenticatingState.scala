@@ -3,19 +3,20 @@ package org.imap.state
 import scala.actors.Actor
 import scala.actors.Actor._
 import org.imap.client._
+import org.imap.common.CompositeLogger
 
 import java.util.regex.Matcher;
 import java.lang.Integer
 import sun.misc.BASE64Encoder;
 
-class AuthenticatingState(client: Actor, tag: Integer, username: String, pass: String) extends AbstractState(client, tag){
+class AuthenticatingState(client: Actor, tag: Integer, logger: CompositeLogger, username: String, pass: String) extends AbstractState(client, tag, logger){
   
   override def reaction(msg: Any) ={
     msg match {
         case Connected =>
-          Console.println("Connected!")          
+          logger.debug("Connected!")          
           client ! SendDataMessage("" + tag, "AUTHENTICATE PLAIN")
-          Console.println("Sent")          
+          logger.debug("Sent")          
         case msg: Any => super.reaction(msg)    
     }
   }
@@ -23,7 +24,7 @@ class AuthenticatingState(client: Actor, tag: Integer, username: String, pass: S
   override def receivedDataRegex: String = "\\+$"
   
   override def onOK ={
-    setState(new GetFoldersState(client, tag.intValue + 1))
+    setState(new GetFoldersState(client, tag.intValue + 1, logger))
   }
 
   override def onPatternMatch(matcher: Matcher) ={

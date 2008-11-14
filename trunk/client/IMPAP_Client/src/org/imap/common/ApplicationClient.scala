@@ -12,7 +12,9 @@ trait ApplicationClient {
 	def isChanged: Boolean = changed
     def setChanged(changed: Boolean) = this.changed = changed.booleanValue
     def listFolder(folder: Item)
+    def addLogger(logger: Logger)
     def close
     def connect(address: String, port: Integer, username: String, pass: String)
     def disconnect
+    def saveMessage(to: String, from: String, subject: String, content: String, folder: Item)
 }

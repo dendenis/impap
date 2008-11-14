@@ -12,7 +12,7 @@ class BasicMessage (message: MimeMessage, id: String) extends Message{
   override def from: String = message.getFrom.foldLeft("")(_ +  _ + " ").trim
   override def to: String = message.getAllRecipients.foldLeft("")(_ +  _ + " ").trim
   override def content: String ={
-    Console.println("MessageItem getContent")
+    Console.println("before BasicMessage getContent")
     if(message.getContent.isInstanceOf[InputStream]){
       val stream = message.getContent.asInstanceOf[InputStream]
       val reader = new BufferedReader(new InputStreamReader(stream))
@@ -20,8 +20,10 @@ class BasicMessage (message: MimeMessage, id: String) extends Message{
       while(reader.ready){
         text = text + reader.readLine
       }
+      Console.println("after BasicMessage getContent (InputStream)")
       text
     }else{
+      Console.println("after BasicMessage getContent (String)")
       message.getContent.toString
     }
   }

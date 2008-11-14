@@ -10,10 +10,11 @@ import scala.actors.Actor
 import scala.actors.Actor._
 
 import org.imap.client._
+import org.imap.common.CompositeLogger
 import org.imap.message.Item
 import java.lang.Integer
 
-class ReceiveHeaderState(client: Actor, tag: Integer, folder: Item, messageUids: List[String]) extends AbstractState(client, tag){
+class ReceiveHeaderState(client: Actor, tag: Integer, logger: CompositeLogger, folder: Item, messageUids: List[String]) extends AbstractState(client, tag, logger){
   val uid = if(!messageUids.isEmpty) messageUids.first else null
   val result = new StringBuilder
 
@@ -21,7 +22,7 @@ class ReceiveHeaderState(client: Actor, tag: Integer, folder: Item, messageUids:
     msg match {
       case Start =>
         if(uid == null){
-          setState(new IdleState(client, tag.intValue + 1))
+          setState(new IdleState(client, tag.intValue + 1, logger))
         }
         else{
           client ! SendDataMessage("" + tag, "UID FETCH " + uid + " (BODY[HEADER])");
@@ -37,8 +38,8 @@ class ReceiveHeaderState(client: Actor, tag: Integer, folder: Item, messageUids:
   }
   
   override def onOK ={
-    Console.println("msg = \n" + result)
-    Console.println("msg end")
+    logger.debug("msg = \n" + result)
+    logger.debug("msg end")
     val stream = new ByteArrayInputStream(result.toString.trim.getBytes)
     try{
       val message = new MimeMessage(Session.getDefaultInstance(new Properties()), stream)
@@ -46,7 +47,7 @@ class ReceiveHeaderState(client: Actor, tag: Integer, folder: Item, messageUids:
     }
     finally{
       stream.close
-      setState(new ReceiveHeaderState(client, tag.intValue + 1, folder, messageUids.tail))
+      setState(new ReceiveHeaderState(client, tag.intValue + 1, logger, folder, messageUids.tail))
     }
   }
 }

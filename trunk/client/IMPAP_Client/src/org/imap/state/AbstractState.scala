@@ -3,20 +3,21 @@ package org.imap.state
 import scala.actors.Actor
 import scala.actors.Actor._
 import org.imap.client._
+import org.imap.common.CompositeLogger
 
 import java.lang.Integer
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-abstract class AbstractState(client: Actor, tag: Integer) extends Actor{
+abstract class AbstractState(client: Actor, tag: Integer, logger: CompositeLogger) extends Actor{
   override def start = {
-    Console.println(this.getClass + " started")
+    logger.debug(this.getClass + " started")
     super.start
   }
   
   override def exit = {
-    Console.println(this.getClass + " stopped")
+    logger.debug(this.getClass + " stopped")
     super.exit
   }
   
@@ -54,13 +55,15 @@ abstract class AbstractState(client: Actor, tag: Integer) extends Actor{
           else{
             onText(message)
           }
-          
+        case Connected =>
+  		  logger.debug(this.getClass + " got unexpected message: " + msg.toString)
         case Disconnect =>
-  		  setState(new DisconnectedState(client, tag.intValue + 1))
+  		  setState(new DisconnectedState(client, tag.intValue + 1, logger))
+        case Start =>
         case Stop =>
           exit
         case msg: Any =>
-          Console.println(this.getClass + " got unknown message: " + msg.toString)
+          logger.debug(this.getClass + " got unknown message: " + msg.toString)
     }
   }
   
@@ -71,15 +74,15 @@ abstract class AbstractState(client: Actor, tag: Integer) extends Actor{
   def getTag: Integer = tag
   
   def onOK ={
-    setState(new IdleState(client, tag.intValue + 1))
+    setState(new IdleState(client, tag.intValue + 1, logger))
   }
   
   def onNO ={
-    setState(new IdleState(client, tag.intValue + 1))
+    setState(new IdleState(client, tag.intValue + 1, logger))
   }
   
   def onBAD ={
-    setState(new IdleState(client, tag.intValue + 1))
+    setState(new IdleState(client, tag.intValue + 1, logger))
   }
   
   def receivedDataRegex: String = null

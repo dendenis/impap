@@ -7,11 +7,12 @@ import scala.actors.Actor
 import scala.actors.Actor._
 
 import org.imap.client._
+import org.imap.common.CompositeLogger
 import org.imap.message.Item
 import java.lang.Integer
 import java.util.LinkedList
 
-class ListFolderState(client: Actor, tag: Integer, folder: Item) extends AbstractState(client, tag){
+class ListFolderState(client: Actor, tag: Integer, logger: CompositeLogger, folder: Item) extends AbstractState(client, tag, logger){
   val uidList = new LinkedList[String]
   
   override def reaction(msg: Any) ={
@@ -30,6 +31,6 @@ class ListFolderState(client: Actor, tag: Integer, folder: Item) extends Abstrac
   
   override def onOK ={
     val array = uidList.toArray( new Array[String](0))
-    setState(new ReceiveHeaderState(client, tag.intValue + 1, folder, array.toList))
+    setState(new ReceiveHeaderState(client, tag.intValue + 1, logger, folder, array.toList))
   }
 }
