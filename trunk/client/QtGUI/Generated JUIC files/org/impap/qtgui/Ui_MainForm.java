@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'MainForm.jui'
 **
-** Created: ¬т 11. но€ 10:46:58 2008
+** Created: ѕт 14. но€ 11:31:02 2008
 **      by: Qt User Interface Compiler version 4.4.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -39,6 +39,8 @@ public class Ui_MainForm
     public QLabel label_3;
     public QPushButton newMessageButton;
     public QPushButton saveMessageButton;
+    public QCheckBox checkBoxSeen;
+    public QCheckBox checkBoxStarred;
     public QGroupBox groupBox_3;
     public QTextBrowser bodyText;
     public QGroupBox groupBox_5;
@@ -75,71 +77,79 @@ public class Ui_MainForm
         groupBox_4.setObjectName("groupBox_4");
         label_7 = new QLabel(groupBox_4);
         label_7.setObjectName("label_7");
-        label_7.setGeometry(new QRect(10, 240, 46, 14));
+        label_7.setGeometry(new QRect(10, 227, 46, 14));
         subjectEdit = new QLineEdit(groupBox_4);
         subjectEdit.setObjectName("subjectEdit");
-        subjectEdit.setGeometry(new QRect(10, 260, 451, 20));
+        subjectEdit.setGeometry(new QRect(10, 247, 451, 20));
         subjectEdit.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
         subjectEdit.setReadOnly(true);
         label_5 = new QLabel(groupBox_4);
         label_5.setObjectName("label_5");
-        label_5.setGeometry(new QRect(10, 150, 46, 14));
+        label_5.setGeometry(new QRect(10, 137, 46, 14));
         fromEdit = new QLineEdit(groupBox_4);
         fromEdit.setObjectName("fromEdit");
-        fromEdit.setGeometry(new QRect(10, 170, 451, 20));
+        fromEdit.setGeometry(new QRect(10, 157, 451, 20));
         fromEdit.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
         fromEdit.setReadOnly(true);
         toEdit = new QLineEdit(groupBox_4);
         toEdit.setObjectName("toEdit");
-        toEdit.setGeometry(new QRect(10, 210, 451, 20));
+        toEdit.setGeometry(new QRect(10, 197, 451, 20));
         toEdit.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
         toEdit.setReadOnly(true);
         label_6 = new QLabel(groupBox_4);
         label_6.setObjectName("label_6");
-        label_6.setGeometry(new QRect(10, 190, 46, 14));
+        label_6.setGeometry(new QRect(10, 177, 46, 14));
         connectButton = new QPushButton(groupBox_4);
         connectButton.setObjectName("connectButton");
-        connectButton.setGeometry(new QRect(220, 34, 51, 23));
+        connectButton.setGeometry(new QRect(220, 21, 51, 23));
         connectButton.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
         label_4 = new QLabel(groupBox_4);
         label_4.setObjectName("label_4");
-        label_4.setGeometry(new QRect(140, 64, 46, 14));
+        label_4.setGeometry(new QRect(140, 51, 46, 14));
         label = new QLabel(groupBox_4);
         label.setObjectName("label");
-        label.setGeometry(new QRect(10, 14, 46, 14));
+        label.setGeometry(new QRect(10, 1, 46, 14));
         label_2 = new QLabel(groupBox_4);
         label_2.setObjectName("label_2");
-        label_2.setGeometry(new QRect(140, 14, 46, 14));
+        label_2.setGeometry(new QRect(140, 1, 46, 14));
         usernameEdit = new QLineEdit(groupBox_4);
         usernameEdit.setObjectName("usernameEdit");
-        usernameEdit.setGeometry(new QRect(10, 84, 113, 20));
+        usernameEdit.setGeometry(new QRect(10, 71, 113, 20));
         usernameEdit.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
         addressEdit = new QLineEdit(groupBox_4);
         addressEdit.setObjectName("addressEdit");
-        addressEdit.setGeometry(new QRect(10, 34, 113, 20));
+        addressEdit.setGeometry(new QRect(10, 21, 113, 20));
         addressEdit.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
         portSpin = new QSpinBox(groupBox_4);
         portSpin.setObjectName("portSpin");
-        portSpin.setGeometry(new QRect(140, 34, 61, 22));
+        portSpin.setGeometry(new QRect(140, 21, 61, 22));
         portSpin.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus);
         portSpin.setMaximum(32768);
         portSpin.setValue(143);
         passEdit = new QLineEdit(groupBox_4);
         passEdit.setObjectName("passEdit");
-        passEdit.setGeometry(new QRect(140, 84, 113, 20));
+        passEdit.setGeometry(new QRect(140, 71, 113, 20));
         passEdit.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
         passEdit.setEchoMode(com.trolltech.qt.gui.QLineEdit.EchoMode.Password);
         label_3 = new QLabel(groupBox_4);
         label_3.setObjectName("label_3");
-        label_3.setGeometry(new QRect(10, 64, 61, 16));
+        label_3.setGeometry(new QRect(10, 51, 61, 16));
         newMessageButton = new QPushButton(groupBox_4);
         newMessageButton.setObjectName("newMessageButton");
-        newMessageButton.setGeometry(new QRect(10, 120, 81, 23));
+        newMessageButton.setGeometry(new QRect(10, 107, 81, 23));
         newMessageButton.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
         saveMessageButton = new QPushButton(groupBox_4);
         saveMessageButton.setObjectName("saveMessageButton");
-        saveMessageButton.setGeometry(new QRect(100, 120, 81, 23));
+        saveMessageButton.setGeometry(new QRect(100, 107, 81, 23));
         saveMessageButton.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
+        checkBoxSeen = new QCheckBox(groupBox_4);
+        checkBoxSeen.setObjectName("checkBoxSeen");
+        checkBoxSeen.setGeometry(new QRect(10, 270, 72, 18));
+        checkBoxSeen.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
+        checkBoxStarred = new QCheckBox(groupBox_4);
+        checkBoxStarred.setObjectName("checkBoxStarred");
+        checkBoxStarred.setGeometry(new QRect(70, 270, 72, 18));
+        checkBoxStarred.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
 
         verticalLayout.addWidget(groupBox_4);
 
@@ -195,6 +205,8 @@ public class Ui_MainForm
         label_3.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "username"));
         newMessageButton.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "new message"));
         saveMessageButton.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "save"));
+        checkBoxSeen.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "Seen"));
+        checkBoxStarred.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "Starred"));
         groupBox_3.setTitle(com.trolltech.qt.core.QCoreApplication.translate("MainForm", ""));
         groupBox_5.setTitle(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "Console"));
     } // retranslateUi

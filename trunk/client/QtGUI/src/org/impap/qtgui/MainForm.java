@@ -32,6 +32,13 @@ public class MainForm extends QMainWindow {
 		ui.newMessageButton.clicked.connect(this, "editMode()");
 		ui.saveMessageButton.clicked.connect(this, "saveMessage()");
 		ui.messageTree.currentItemChanged.connect(this, "itemSelected()");
+		ui.checkBoxSeen.clicked.connect(this, "seenFlagChanged()");
+		ui.checkBoxStarred.clicked.connect(this, "starredFlagChanged()");
+		
+		ui.checkBoxSeen.setEnabled(false);
+		ui.checkBoxStarred.setEnabled(false);
+		ui.checkBoxSeen.setChecked(false);
+		ui.checkBoxStarred.setChecked(false);
 
 		client.addLogger(new GuiLogger(ui));
 
@@ -86,6 +93,8 @@ public class MainForm extends QMainWindow {
 				ui.toEdit.setText(currentMessage.to());
 				ui.subjectEdit.setText(currentMessage.subject());
 				ui.bodyText.setHtml(currentMessage.content());
+				ui.checkBoxSeen.setChecked(currentMessage.getFlag("\\Seen"));
+				ui.checkBoxStarred.setChecked(currentMessage.getFlag("\\Flagged"));
 			}
 		}
 	}
@@ -116,24 +125,47 @@ public class MainForm extends QMainWindow {
 	}
 
 	public void saveMessage() {
-		if (ui.messageTree.topLevelItem(0) != (ui.messageTree.currentItem()) && ui.messageTree.currentItem() != null) {
+		if (ui.messageTree.topLevelItem(0) != (ui.messageTree.currentItem())
+				&& ui.messageTree.currentItem() != null) {
 			Item imapItem = (Item) ui.messageTree.currentItem().data(1, 0);
-			client.saveMessage(ui.toEdit.text(), ui.fromEdit.text(), ui.subjectEdit.text(), ui.bodyText.toPlainText(), imapItem);
+			client.saveMessage(ui.toEdit.text(), ui.fromEdit.text(),
+					ui.subjectEdit.text(), ui.bodyText.toPlainText(), imapItem);
 		}
 	}
 
 	public void editMode() {
-		if (ui.messageTree.topLevelItem(0) != (ui.messageTree.currentItem()) && ui.messageTree.currentItem() != null) {
+		if (ui.messageTree.topLevelItem(0) != (ui.messageTree.currentItem())
+				&& ui.messageTree.currentItem() != null) {
 			setViewMode(false);
 			ui.fromEdit.setText(ui.usernameEdit.text());
 			ui.toEdit.setText("");
 			ui.subjectEdit.setText("");
 			ui.bodyText.setText("");
+			ui.checkBoxSeen.setChecked(false);
+			ui.checkBoxStarred.setChecked(false);
 		}
 	}
 
 	public void viewMode() {
 		setViewMode(true);
+	}
+	
+	public void seenFlagChanged(){
+		Item imapItem = (Item) ui.messageTree.currentItem().data(1, 0);
+
+		if (imapItem != null) {
+			boolean value = ui.checkBoxSeen.isChecked();
+			client.setFlag(imapItem, currentMessage, "\\Seen", value);
+		}
+	}
+	
+	public void starredFlagChanged(){
+		Item imapItem = (Item) ui.messageTree.currentItem().data(1, 0);
+
+		if (imapItem != null) {
+			boolean value = ui.checkBoxStarred.isChecked();
+			client.setFlag(imapItem, currentMessage, "\\Flagged", value);
+		}
 	}
 
 	public void setViewMode(boolean value) {
@@ -144,12 +176,19 @@ public class MainForm extends QMainWindow {
 	}
 
 	public void itemSelected() {
+		ui.checkBoxSeen.setEnabled(false);
+		ui.checkBoxStarred.setEnabled(false);
+		ui.checkBoxSeen.setChecked(false);
+		ui.checkBoxStarred.setChecked(false);
+
+
 		viewMode();
 		if (connected) {
 			if (ui.messageTree.currentItem() != null) {
 				Item imapItem = (Item) ui.messageTree.currentItem().data(1, 0);
 
 				if (imapItem != null) {
+					
 					if (imapItem.isFolder()) {
 						currentMessage = null;
 						ui.fromEdit.setText("");
@@ -170,6 +209,10 @@ public class MainForm extends QMainWindow {
 						System.out.println("GUI got message content");
 						ui.bodyText.setHtml(content);
 						System.out.println("content is set");
+						ui.checkBoxSeen.setEnabled(true);
+						ui.checkBoxStarred.setEnabled(true);
+						ui.checkBoxSeen.setChecked(currentMessage.getFlag("\\Seen"));
+						ui.checkBoxStarred.setChecked(currentMessage.getFlag("\\Flagged"));
 					}
 				}
 			}
