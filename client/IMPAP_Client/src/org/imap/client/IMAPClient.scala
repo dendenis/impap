@@ -4,20 +4,34 @@ import scala.actors.Actor
 import scala.actors.Actor._
 
 import org.imap.message.Item;
-import org.imap.message._;
+import org.imap.message._
 
 import org.imap.state._
 import org.imap.common.ApplicationClient
+import org.imap.common.Logger
+import org.imap.common.CompositeLogger
 
 import com.sun.mail.dsn.MessageHeaders
+import javax.mail.internet.MimeMessage
+import javax.mail.internet.InternetAddress
+
+import javax.mail.Address
+import javax.mail.Session
+import javax.mail.Message.RecipientType
+import java.util.Properties
+import java.util.Date
+import java.util.Locale
+import java.text.SimpleDateFormat
+import java.io.ByteArrayOutputStream
 
 import java.io.ByteArrayInputStream
 import java.lang.Boolean
 import java.lang.Integer
 import java.util.HashMap
+import scala.collection.mutable.LinkedList
 
-class IMAPClient extends Actor with ApplicationClient{
-  var state: AbstractState = new DisconnectedState(this, 0)
+class IMAPClient(logger: CompositeLogger) extends Actor with ApplicationClient{
+  var state: AbstractState = new DisconnectedState(this, 0, logger)
   val root = new FolderItem("root", "/")
   val messages = new HashMap[String, Message] 
   var networkService: Actor = null
@@ -28,14 +42,13 @@ class IMAPClient extends Actor with ApplicationClient{
     super.start
   }
   
+  def addLogger(logger: Logger) = this.logger.addInfo(logger)
+    
   def connect(address: String, port: Integer, username: String, pass: String) ={
-    val oldTag = state.getTag
-    state ! Stop
-    state = new AuthenticatingState(this, oldTag.intValue + 1, username, pass)
-    state.start
     networkService ! Connect(address, port)
+    state ! Authenticate(username, pass)
   }
-  
+    
   def disconnect ={
     networkService ! Disconnect
     state ! Disconnect
@@ -50,6 +63,9 @@ class IMAPClient extends Actor with ApplicationClient{
       react{
         case Connected =>
           state ! Connected
+        case Disconnect =>
+          networkService ! Disconnect
+          state ! Disconnect
         case ReceivedDataMessage(text) =>
           state ! ReceivedDataMessage(text)
         case SendDataMessage(tag, text) =>
@@ -59,7 +75,7 @@ class IMAPClient extends Actor with ApplicationClient{
         case SendLastDataMessage(tag, text) =>
           networkService ! SendLastDataMessage(tag, text)
         case SetState(newState) =>
-          Console.println("Got set state event")
+          logger.debug("Got set state event")
           state ! Stop
           state = newState
           newState.start
@@ -80,7 +96,7 @@ class IMAPClient extends Actor with ApplicationClient{
          messages.put(message.getId, message)
 
         case Stop =>
-          Console.println("IMAPClient stopped")
+          logger.debug("IMAPClient stopped")
           exit
       }
     }
@@ -109,6 +125,24 @@ class IMAPClient extends Actor with ApplicationClient{
       state ! GetMessage(folder, uid) 
       new NotDownloadedMessage(uid)
     }
+  }
+  
+  def saveMessage(to: String, from: String, subject: String, content: String, folder: Item) ={
+    val mimeMessage = new MimeMessage(Session.getDefaultInstance(new Properties()))
+    mimeMessage.addRecipients(RecipientType.TO, to)
+    val addr = new Array[Address](1)
+    addr(0) = new InternetAddress(from)
+    mimeMessage.addFrom(addr)
+    mimeMessage.addHeader("Subject", subject)
+//    mimeMessage.addHeader("MIME-Version", "1.0")
+//    mimeMessage.addHeader("Content-Type", "text/html")
+    val format = new SimpleDateFormat("\"dd-MMM-yyyy HH:mm:ss Z\"", Locale.US)
+    val date = format.format(new Date())
+    mimeMessage.addHeader("Date", date)
+    mimeMessage.setText(content)
+    val stream = new ByteArrayOutputStream()
+    mimeMessage.writeTo(stream)
+    this ! SetState(new AppendMessageState(this, state.getTag.intValue + 1, logger, folder, stream.toString, date))
   }
   
   def close ={

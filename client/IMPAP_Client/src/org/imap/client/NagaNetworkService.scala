@@ -3,6 +3,8 @@ package org.imap.client
 import scala.actors.Actor
 import scala.actors.Actor._
 
+import org.imap.common.CompositeLogger
+
 import naga.ConnectionAcceptor
 import naga.NIOServerSocket
 import naga.NIOService
@@ -12,7 +14,7 @@ import naga.SocketObserver
 import naga.packetreader.DelimiterPacketReader
 import java.lang.Integer
 
-class NagaNetworkService(applicationClient: Actor) extends Actor{
+class NagaNetworkService(applicationClient: Actor, logger: CompositeLogger) extends Actor{
   var receive_events = false
   var is_running = true
   val service = new NIOService()
@@ -21,14 +23,14 @@ class NagaNetworkService(applicationClient: Actor) extends Actor{
     new Thread(new Runnable
                {
                  override def run ={
-                   Console.println("loop started")
+                   logger.debug("loop started")
                    while(is_running){
-                     if(receive_events){                     
+                     if(receive_events){    
                        service.selectNonBlocking
                        Thread.sleep(50)
                      }
                    }
-                   Console.println("loop stopped")
+                   logger.debug("loop stopped")
                  }  
                 })
  
@@ -46,7 +48,7 @@ class NagaNetworkService(applicationClient: Actor) extends Actor{
 	    def packetReceived(socket: NIOSocket, packet: Array[byte]) {
   	      try {
 	        val response = new String(packet).trim()
-		    Console.println("S: " + response)
+		    logger.info("S: " + response)
             applicationClient ! ReceivedDataMessage(response)
    	      } 
           catch {
@@ -55,8 +57,8 @@ class NagaNetworkService(applicationClient: Actor) extends Actor{
 	    }
 
 	    def connectionBroken(nioSocket: NIOSocket,	e: Exception) {
-	      System.out.println("Connection failed: " + e.getStackTraceString)
-		  disconnect
+	      logger.info("Connection failed: " + e.getStackTraceString)
+		  applicationClient ! Disconnect
 	    }
 	  });
     } 
@@ -65,7 +67,7 @@ class NagaNetworkService(applicationClient: Actor) extends Actor{
     }
     
     receive_events = true
-    Console.println("Network service connected")
+    logger.debug("Network service connected")
   }
   
   override def start ={
@@ -77,7 +79,7 @@ class NagaNetworkService(applicationClient: Actor) extends Actor{
     if(socket != null)
       socket.close
     receive_events = false
-    Console.println("Network service disconnected")
+    logger.debug("Network service disconnected")
   }
   
   def act ={
@@ -85,17 +87,17 @@ class NagaNetworkService(applicationClient: Actor) extends Actor{
       receive{
         case Stop =>
           is_running = false
-          Console.println("NagaNetworkService stopped")
+          logger.debug("NagaNetworkService stopped")
           exit
         case Connect(address: String, port: Integer) =>
           connect(address, port)
         case Disconnect =>
           disconnect
         case SendDataMessage(tag, text) => 
-          Console.println("C: " + tag + " " + text)
+          logger.info("C: " + tag + " " + text)
           socket.write((tag + " " + text + "\r\n").getBytes())
         case SendRawDataMessage(text) => 
-          Console.println("C: " + text)
+          logger.info("C: " + text)
           socket.write((text + "\r\n").getBytes())
       }
 	}

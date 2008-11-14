@@ -4,11 +4,12 @@ import java.util.regex.Matcher;
 
 import scala.actors.Actor
 import scala.actors.Actor._
+import org.imap.common.CompositeLogger
 import java.lang.Integer
 
 import org.imap.client._
 
-class GetFoldersState(client: Actor, tag: Integer) extends AbstractState(client, tag){
+class GetFoldersState(client: Actor, tag: Integer, logger: CompositeLogger) extends AbstractState(client, tag, logger){
 
   override def reaction(msg: Any) ={
     msg match {
