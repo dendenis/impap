@@ -1,8 +1,8 @@
 package org.impap.srv
 
-import java.nio.channels.SocketChannel;
+import naga.NIOSocket;
 import scala.actors.Actor
 
 trait ServerFactory {
-  def create(channel: SocketChannel): Actor
+  def create(socket: NIOSocket): Actor
 }

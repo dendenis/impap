@@ -1,6 +1,6 @@
 package org.impap.srv
 
-import java.nio.channels.SocketChannel;
+import naga.NIOSocket;
 
 case class ReceivedDataMessage(text: String)
 case class Connected
