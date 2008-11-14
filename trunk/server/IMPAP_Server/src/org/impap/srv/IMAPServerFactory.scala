@@ -1,8 +1,8 @@
 package org.impap.srv
 
-import java.nio.channels.SocketChannel;
+import naga.NIOSocket
 import scala.actors.Actor
 
 class IMAPServerFactory extends ServerFactory{
-  def create(channel: SocketChannel): Actor = return new IMAPServer(channel) 
+  def create(socket: NIOSocket): Actor = return new IMAPServer(socket) 
 }
