@@ -9,4 +9,6 @@ class NotDownloadedMessage(id: String) extends Message{
   override def to: String = ""
   override def content: String = ""
   override def getId: String = id
+  override def getFlag(flag: String): Boolean = false
+  override def setFlag(flag: String, value: Boolean) = {}
 }

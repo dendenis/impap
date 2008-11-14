@@ -9,4 +9,6 @@ trait Message {
   def to: String
   def content: String
   def getId: String
+  def getFlag(flag: String): Boolean
+  def setFlag(flag: String, value: Boolean)
 }
