@@ -17,4 +17,5 @@ trait ApplicationClient {
     def connect(address: String, port: Integer, username: String, pass: String)
     def disconnect
     def saveMessage(to: String, from: String, subject: String, content: String, folder: Item)
+    def setFlag(folder: Item, message: Message, flag: String, value: Boolean)
 }

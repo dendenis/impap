@@ -1,12 +1,16 @@
 package org.imap.message
 
 import javax.mail.internet.MimeMessage
+import javax.mail.Flags
 import java.lang.Boolean
 import java.io.InputStream
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.util.HashSet
 
-class BasicMessage (message: MimeMessage, id: String) extends Message{
+class BasicMessage (message: MimeMessage, flags: Array[String], id: String) extends Message{
+  val flagsSet = new HashSet[String]()
+  
   override def isDownloaded: Boolean = true
   override def subject: String = message.getSubject
   override def from: String = message.getFrom.foldLeft("")(_ +  _ + " ").trim
@@ -28,4 +32,29 @@ class BasicMessage (message: MimeMessage, id: String) extends Message{
     }
   }
   override def getId: String = id
+  override def getFlag(flag: String): Boolean ={
+    if(flagsSet.isEmpty()){
+      for(f: String <- flags){
+        flagsSet.add(f)
+      }
+    }
+    flagsSet.contains(flag)
+    
+  }
+  
+  override def setFlag(flag: String, value: Boolean)={
+    if(value.booleanValue){
+      if(!flagsSet.contains(flag)){
+        flagsSet.add(flag)
+      }
+    }
+    else{
+      if(flagsSet.contains(flag)){
+        flagsSet.remove(flag)
+      }
+    }
+    
+    Console.println("New Flags " + flagsSet.toString)
+  }
+  
 }

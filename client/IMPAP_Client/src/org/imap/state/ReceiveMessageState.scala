@@ -38,12 +38,15 @@ class ReceiveMessageState(client: Actor, tag: Integer, logger: CompositeLogger, 
     val stream = new ByteArrayInputStream(result.toString.trim.getBytes)
     try{
       val mimeMessage = new MimeMessage(Session.getDefaultInstance(new Properties()), stream)
-      val message = new BasicMessage(mimeMessage, uid)
-      client ! AddMessage(message)
+      //val message = new BasicMessage(mimeMessage, uid)
+      setState(new ReceiveFlagsState(client, tag.intValue + 1, logger, uid, mimeMessage))
+      //client ! AddMessage(message)
+    }
+    catch{
+      case _ => setState(new IdleState(client, tag.intValue + 1, logger)) 
     }
     finally{
       stream.close
-      setState(new IdleState(client, tag.intValue + 1, logger))
     }
   }
 }

@@ -28,6 +28,7 @@ import java.io.ByteArrayInputStream
 import java.lang.Boolean
 import java.lang.Integer
 import java.util.HashMap
+import java.util.HashSet
 import scala.collection.mutable.LinkedList
 
 class IMAPClient(logger: CompositeLogger) extends Actor with ApplicationClient{
@@ -143,6 +144,11 @@ class IMAPClient(logger: CompositeLogger) extends Actor with ApplicationClient{
     val stream = new ByteArrayOutputStream()
     mimeMessage.writeTo(stream)
     this ! SetState(new AppendMessageState(this, state.getTag.intValue + 1, logger, folder, stream.toString, date))
+  }
+  
+  def setFlag(folder: Item, message: Message, flag: String, value: Boolean) ={
+    message.setFlag(flag, value)
+    this ! SetState(new StoreFlagState(this, state.getTag.intValue + 1, logger, message.getId, flag, value))
   }
   
   def close ={
