@@ -1,0 +1,48 @@
+= IMAP folder management example =
+{{{
+s: 2 OK AUTHENTICATE completed
+c: 3 CREATE "test/test2"
+s: 3 OK CREATE completed
+c: 4 LSUB "" "*"
+s: * LSUB (\HasNoChildren \Noinferiors) "/" INBOX
+s: * LSUB (\HasNoChildren \Noinferiors) "/" "Sent Items"
+s: * LSUB (\HasNoChildren \Noinferiors) "/" VOICEMAIL
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Spam
+s: * LSUB (\HasChildren) "/" Saved
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Drafts
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Trash
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Saved/SavedIMs
+s: * LSUB (\HasNoChildren \Noinferiors) "/" afolder
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Saved/test
+s: * LSUB (\HasNoChildren \Noinferiors) "/" test/test2
+s: 4 OK LSUB completed
+c: 5 RENAME "test/test2" "test/test3"
+s: 5 OK RENAME completed
+c: 6 LSUB "" "*"
+s: * LSUB (\HasNoChildren \Noinferiors) "/" INBOX
+s: * LSUB (\HasNoChildren \Noinferiors) "/" "Sent Items"
+s: * LSUB (\HasNoChildren \Noinferiors) "/" VOICEMAIL
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Spam
+s: * LSUB (\HasChildren) "/" Saved
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Drafts
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Trash
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Saved/SavedIMs
+s: * LSUB (\HasNoChildren \Noinferiors) "/" afolder
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Saved/test
+s: * LSUB (\HasNoChildren \Noinferiors) "/" test/test3
+s: 6 OK LSUB completed
+c: 7 DELETE "test/test3"
+s: 7 OK DELETE completed
+c: 8 LSUB "" "*"
+s: * LSUB (\HasNoChildren \Noinferiors) "/" INBOX
+s: * LSUB (\HasNoChildren \Noinferiors) "/" "Sent Items"
+s: * LSUB (\HasNoChildren \Noinferiors) "/" VOICEMAIL
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Spam
+s: * LSUB (\HasChildren) "/" Saved
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Drafts
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Trash
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Saved/SavedIMs
+s: * LSUB (\HasNoChildren \Noinferiors) "/" afolder
+s: * LSUB (\HasNoChildren \Noinferiors) "/" Saved/test
+s: 8 OK LSUB completed
+}}}
