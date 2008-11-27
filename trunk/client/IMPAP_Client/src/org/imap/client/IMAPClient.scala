@@ -135,12 +135,10 @@ class IMAPClient(logger: CompositeLogger) extends Actor with ApplicationClient{
     addr(0) = new InternetAddress(from)
     mimeMessage.addFrom(addr)
     mimeMessage.addHeader("Subject", subject)
-//    mimeMessage.addHeader("MIME-Version", "1.0")
-//    mimeMessage.addHeader("Content-Type", "text/html")
     val format = new SimpleDateFormat("\"dd-MMM-yyyy HH:mm:ss Z\"", Locale.US)
     val date = format.format(new Date())
     mimeMessage.addHeader("Date", date)
-    mimeMessage.setText(content)
+    mimeMessage.setContent(content, "text/plain");
     val stream = new ByteArrayOutputStream()
     mimeMessage.writeTo(stream)
     this ! SetState(new AppendMessageState(this, state.getTag.intValue + 1, logger, folder, stream.toString, date))
