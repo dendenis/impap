@@ -22,6 +22,7 @@ case class Start
 case class Stop
 
 case class SetState(state: AbstractState)
+case class SetChanged
 case class AddFolderItem(folder: String)
 case class AddMessageItem(folder: Item, message: MimeMessage, uid: String)
 case class AddMessage(message: org.imap.message.Message)

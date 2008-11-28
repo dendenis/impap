@@ -26,7 +26,6 @@ class ReceiveFlagsState(client: Actor, tag: Integer, logger: CompositeLogger, ui
     }
   }
   
-//  * 1 FETCH (UID 19878828 FLAGS (\Seen XAOL-READ XAOL-GOODCHECK-DONE XAOL-BILLPAY-MAIL))
   override def receivedDataRegex: String = ".*FLAGS \\((.*)\\)\\)$"
   
   override def onPatternMatch(matcher: Matcher) ={

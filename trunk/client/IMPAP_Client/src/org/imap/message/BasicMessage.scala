@@ -6,7 +6,10 @@ import java.lang.Boolean
 import java.io.InputStream
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.io.ByteArrayOutputStream
 import java.util.HashSet
+import sun.misc.BASE64Encoder
+
 
 class BasicMessage (message: MimeMessage, flags: Array[String], id: String) extends Message{
   val flagsSet = new HashSet[String]()
@@ -57,4 +60,29 @@ class BasicMessage (message: MimeMessage, flags: Array[String], id: String) exte
     Console.println("New Flags " + flagsSet.toString)
   }
   
+  override def serialize: String ={
+    val byteStream = new ByteArrayOutputStream()
+    val enc = new BASE64Encoder()
+          
+    message.writeTo(byteStream)
+    val content = enc.encode(byteStream.toByteArray).replaceAll("\r", "").replaceAll("\n", "")
+    byteStream.close
+    val flagStream = new ByteArrayOutputStream()
+    
+   if(flagsSet.isEmpty()){
+      for(f: String <- this.flags){
+        flagsSet.add(f)
+      }
+    }
+    
+    System.err.println("serialize flags " + flagsSet)
+    for(val flag <- flagsSet.toArray){
+      flagStream.write((flag + " ").getBytes)
+    }
+    val flags = flagStream.toByteArray
+    flagStream.close
+          
+    "BasicMessage:" + enc.encode(id.getBytes) + ":" + content + ":" + 
+                      enc.encode(flags) + "\n"
+  }
 }
