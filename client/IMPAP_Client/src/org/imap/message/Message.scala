@@ -11,4 +11,5 @@ trait Message {
   def getId: String
   def getFlag(flag: String): Boolean
   def setFlag(flag: String, value: Boolean)
+  def serialize: String
 }

@@ -21,7 +21,7 @@ class AppendMessageState(client: Actor, tag: Integer, logger: CompositeLogger, f
   override def reaction(msg: Any) ={
     msg match {
       case Start =>
-        client ! SendDataMessage("" + tag, "APPEND \"" + folder.getText + "\" (\\Seen) " + date + " {" + message.length() + "+}");
+        client ! SendDataMessage("" + tag, "APPEND \"" + folder.getId + "\" (\\Seen) " + date + " {" + message.length() + "+}");
         client ! SendRawDataMessage(message)
       case msg: Any => super.reaction(msg)  
     }

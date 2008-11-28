@@ -21,6 +21,7 @@ import javax.mail.Message.RecipientType
 import java.util.Properties
 import java.util.Date
 import java.util.Locale
+import java.util.Iterator
 import java.text.SimpleDateFormat
 import java.io.ByteArrayOutputStream
 
@@ -35,12 +36,16 @@ class IMAPClient(logger: CompositeLogger) extends Actor with ApplicationClient{
   var state: AbstractState = new DisconnectedState(this, 0, logger)
   val root = new FolderItem("root", "/")
   val messages = new HashMap[String, Message] 
+  val folders = new HashMap[String, Item]
   var networkService: Actor = null
+  var messagePersistenceManager: Actor = null
   
-  def start(networkService: Actor) = {
+  def start(networkService: Actor, messagePersistenceManager: Actor) = {
     this.networkService = networkService
+    this.messagePersistenceManager = messagePersistenceManager
     state.start
     super.start
+    messagePersistenceManager ! Start
   }
   
   def addLogger(logger: Logger) = this.logger.addInfo(logger)
@@ -85,18 +90,25 @@ class IMAPClient(logger: CompositeLogger) extends Actor with ApplicationClient{
           Console.println(folderStr)
           val folders = folderStr.split("/")
           updateTree(root, folders.toList, "")
+          messagePersistenceManager ! AddFolderItem(folderStr)
           Console.println(root)
         case AddMessageItem(folder, message, messageUid) =>
           Console.println(messageUid)
-          if(!folder.getChildren.containsKey(messageUid)){
-            folder.children.put(messageUid, new MessageItem(message, messageUid))
-            setChanged(true)
-            Console.println(root)
-          }
+          if(folders.containsKey(folder.getId)){
+            if(!folder.getChildren.containsKey(messageUid)){
+              folders.get(folder.getId).children.put(messageUid, new MessageItem(message, messageUid))
+              setChanged(true)
+              Console.println(root)
+              messagePersistenceManager ! AddMessageItem(folder, message, messageUid)
+            }
+          }  
        case AddMessage(message) =>
+         System.err.println("AddMessage:" + message.getId)
          messages.put(message.getId, message)
-
+         messagePersistenceManager ! AddMessage(message)
+     
         case Stop =>
+          messagePersistenceManager ! Stop
           logger.debug("IMAPClient stopped")
           exit
       }
@@ -109,7 +121,9 @@ class IMAPClient(logger: CompositeLogger) extends Actor with ApplicationClient{
     val folder = folders.first
     if(!position.getChildren.containsKey(folder))
     {
-      position.getChildren.put(folder, new FolderItem(folder, parent + folder))
+      val folderItem = new FolderItem(folder, parent + folder)
+      this.folders.put(folderItem.getId, folderItem)
+      position.getChildren.put(folder, folderItem)
       setChanged(true)
     }
     val child = position.getChildren.get(folder)
@@ -119,6 +133,7 @@ class IMAPClient(logger: CompositeLogger) extends Actor with ApplicationClient{
   def getItemTree(): Item = root
   
   def getMessage(folder: Item, uid: String): Message ={
+    System.err.println("getMessage:" + uid)
     if(messages.containsKey(uid)){
       messages.get(uid)
     }
@@ -147,6 +162,22 @@ class IMAPClient(logger: CompositeLogger) extends Actor with ApplicationClient{
   def setFlag(folder: Item, message: Message, flag: String, value: Boolean) ={
     message.setFlag(flag, value)
     this ! SetState(new StoreFlagState(this, state.getTag.intValue + 1, logger, message.getId, flag, value))
+  }
+  
+  def createFolder(name: String) ={
+    this ! SetState(new CreateFolderState(this, state.getTag.intValue + 1, logger, name))
+  }
+  
+  def deleteFolder(folder: Item) ={
+    root.getChildren.clear
+    setChanged(true)
+    this ! SetState(new CloseBeforeDeleteState(this, state.getTag.intValue + 1, logger, folder))
+  }
+  
+  def renameFolder(folder: Item, name: String) ={
+    root.getChildren.clear
+    setChanged(true)
+    this ! SetState(new CloseBeforeRenameState(this, state.getTag.intValue + 1, logger, folder, name))
   }
   
   def close ={

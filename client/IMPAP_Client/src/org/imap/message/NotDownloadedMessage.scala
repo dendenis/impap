@@ -11,4 +11,5 @@ class NotDownloadedMessage(id: String) extends Message{
   override def getId: String = id
   override def getFlag(flag: String): Boolean = false
   override def setFlag(flag: String, value: Boolean) = {}
+  override def serialize: String = {throw new Exception("Not supported")}
 }

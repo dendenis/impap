@@ -18,4 +18,7 @@ trait ApplicationClient {
     def disconnect
     def saveMessage(to: String, from: String, subject: String, content: String, folder: Item)
     def setFlag(folder: Item, message: Message, flag: String, value: Boolean)
+    def createFolder(name: String)
+    def deleteFolder(folder: Item)
+    def renameFolder(folder: Item, name: String)
 }
