@@ -36,7 +36,9 @@ public class Main {
         
 		IMAPClient client = new IMAPClient(logger);
 		NagaNetworkService networkService = new NagaNetworkService(client, logger);
-		client.start(networkService);
+		MessagePersistenceManager persistenceManager = new MessagePersistenceManager(logger, client);
+		persistenceManager.start();
+		client.start(networkService, persistenceManager);
 		networkService.start();
 		ClientGui gui = new ClientGui(client);
 		gui.start();
