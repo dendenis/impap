@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'MainForm.jui'
 **
-** Created: ѕт 14. но€ 11:31:02 2008
+** Created: ѕт 28. но€ 01:32:45 2008
 **      by: Qt User Interface Compiler version 4.4.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -19,6 +19,10 @@ public class Ui_MainForm
     public QHBoxLayout horizontalLayout;
     public QGroupBox groupBox_2;
     public QTreeWidget messageTree;
+    public QPushButton createFolderButton;
+    public QLineEdit newFolderText;
+    public QPushButton renameFolderButton;
+    public QPushButton deleteFolderButton;
     public QGroupBox groupBox;
     public QVBoxLayout verticalLayout;
     public QGroupBox groupBox_4;
@@ -63,9 +67,25 @@ public class Ui_MainForm
         groupBox_2.setObjectName("groupBox_2");
         messageTree = new QTreeWidget(groupBox_2);
         messageTree.setObjectName("messageTree");
-        messageTree.setGeometry(new QRect(3, 8, 430, 890));
+        messageTree.setGeometry(new QRect(3, 7, 430, 841));
         messageTree.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.WheelFocus);
         messageTree.setAutoFillBackground(false);
+        createFolderButton = new QPushButton(groupBox_2);
+        createFolderButton.setObjectName("createFolderButton");
+        createFolderButton.setGeometry(new QRect(180, 850, 81, 23));
+        createFolderButton.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
+        newFolderText = new QLineEdit(groupBox_2);
+        newFolderText.setObjectName("newFolderText");
+        newFolderText.setGeometry(new QRect(10, 851, 161, 20));
+        newFolderText.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
+        renameFolderButton = new QPushButton(groupBox_2);
+        renameFolderButton.setObjectName("renameFolderButton");
+        renameFolderButton.setGeometry(new QRect(270, 850, 81, 23));
+        renameFolderButton.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
+        deleteFolderButton = new QPushButton(groupBox_2);
+        deleteFolderButton.setObjectName("deleteFolderButton");
+        deleteFolderButton.setGeometry(new QRect(10, 877, 81, 23));
+        deleteFolderButton.setFocusPolicy(com.trolltech.qt.core.Qt.FocusPolicy.StrongFocus);
 
         horizontalLayout.addWidget(groupBox_2);
 
@@ -190,6 +210,10 @@ public class Ui_MainForm
         actionConnect.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "connect"));
         groupBox_2.setTitle(com.trolltech.qt.core.QCoreApplication.translate("MainForm", ""));
         messageTree.headerItem().setText(0, com.trolltech.qt.core.QCoreApplication.translate("MainForm", "mailbox"));
+        createFolderButton.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "create"));
+        newFolderText.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", ""));
+        renameFolderButton.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "rename"));
+        deleteFolderButton.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "delete"));
         groupBox.setTitle(com.trolltech.qt.core.QCoreApplication.translate("MainForm", ""));
         groupBox_4.setTitle(com.trolltech.qt.core.QCoreApplication.translate("MainForm", ""));
         label_7.setText(com.trolltech.qt.core.QCoreApplication.translate("MainForm", "subject"));
