@@ -18,7 +18,7 @@ class StoreFlagState(client: Actor, tag: Integer, logger: CompositeLogger, uid: 
     msg match {
         case Start =>
           val stringValue = if(value.booleanValue) "+" else "-"
-          client ! SendDataMessage("" + tag, "UID STORE " + uid + " " + stringValue + "FLAGS" + "(" + flag + ")")
+          client ! SendDataMessage("" + tag, "UID STORE " + uid + " " + stringValue + "FLAGS " + "(" + flag + ")")
         case msg: Any => super.reaction(msg)  
     }
   }
